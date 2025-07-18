@@ -18,6 +18,12 @@ class BashPinyinCompletionRs < Formula
     bash_completion.install 'scripts/bash_pinyin_completion'
   end
 
+  bottle do
+    root_url 'https://github.com/OrkWard/homebrew-tap/releases/download/v0.2.0'
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: 'c577bcab337f1f7ac30c45d4bd60edcbdb5a9d43061d060b681ba2415f88a2a6'
+  end
+
   def caveats
     <<~CAVEATS
       To enable bash-pinyin-completion-rs, add this to your .bashrc:
