@@ -28,6 +28,6 @@ class Wormface < Formula
   end
 
   test do
-    system "#{bin}/wormface", "--help"
+    assert_match "wormface-cli", shell_output("#{bin}/wormface 2>&1", 1)
   end
 end
