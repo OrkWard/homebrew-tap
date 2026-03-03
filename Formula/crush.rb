@@ -7,7 +7,7 @@ class Crush < Formula
   on_macos do
     on_arm do
       url "https://github.com/OrkWard/crush/releases/download/v0.46.3/crush_Darwin_arm64.tar.gz"
-      sha256 "4b3082c30a4a4448098a07ad4e067aff392d2e1a2b0be7a555371cfca3d3da1f"
+      sha256 "c2b122bef10a5fb4d716d4cd55b5c8bd368ded32b643ffbed0d80d6658497f2f"
     end
   end
 
