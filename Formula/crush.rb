@@ -1,13 +1,13 @@
 class Crush < Formula
   desc "A powerful AI assistant that runs in the CLI"
   homepage "https://github.com/OrkWard/crush"
-  version "0.47.0"
+  version "0.48.0"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/OrkWard/crush/releases/download/v0.47.0/crush_Darwin_arm64.tar.gz"
-      sha256 "01c738da22f5f6465b0f1207f22688674d74d1b4e8446ea919d1c24eb1fa4b5e"
+      url "https://github.com/OrkWard/crush/releases/download/v0.48.0/crush_0.48.0_Darwin_arm64.tar.gz"
+      sha256 "d92c81613fc76a057353101a687333379145c52a9add1477e6756b695f1b3f42"
     end
   end
 
