@@ -11,6 +11,28 @@ class Selever < Formula
     system "go", "build", "-o", bin/"selever",  "./cmd/selever"
     system "go", "build", "-o", bin/"fetchver", "./cmd/fetchver"
     system "go", "build", "-o", bin/"globver",  "./cmd/globver"
+
+    generate_completions
+  end
+
+  def generate_completions
+    # fish
+    %w[selever fetchver globver].each do |name|
+      (buildpath/"#{name}.fish").write Utils.safe_popen_read(bin/name, "completion", "fish")
+      fish_completion.install buildpath/"#{name}.fish"
+    end
+
+    # bash
+    %w[selever fetchver globver].each do |name|
+      (buildpath/name).write Utils.safe_popen_read(bin/name, "completion", "bash")
+      bash_completion.install buildpath/name
+    end
+
+    # zsh
+    %w[selever fetchver globver].each do |name|
+      (buildpath/"_#{name}").write Utils.safe_popen_read(bin/name, "completion", "zsh")
+      zsh_completion.install buildpath/"_#{name}"
+    end
   end
 
   test do
