@@ -8,6 +8,12 @@ class Selever < Formula
 
   depends_on "go" => :build
 
+  bottle do
+    root_url "https://github.com/orkward/selever/releases/download/v1.0.0"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e335abbc1f26e01ee612e553dc436e5cbdb5a9a2efd49e6fbdb762a94a126daa"
+  end
+
   def install
     system "go", "build", "-o", bin/"selever",  "./cmd/selever"
     system "go", "build", "-o", bin/"fetchver", "./cmd/fetchver"
