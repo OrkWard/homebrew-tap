@@ -3,6 +3,7 @@ class Selever < Formula
   homepage "https://github.com/orkward/selever"
   license "MIT"
 
+  url "https://github.com/orkward/selever.git", using: :git, tag: "v1.0.0"
   head "https://github.com/orkward/selever.git", using: :git, branch: "master"
 
   depends_on "go" => :build
