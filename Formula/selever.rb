@@ -6,6 +6,12 @@ class Selever < Formula
   license "MIT"
   head "https://github.com/orkward/selever.git", using: :git, branch: "master"
 
+  bottle do
+    root_url "https://github.com/orkward/selever/releases/download/v1.0.0"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4c11def5dc15e6530594786f81cb17f012800406a9fedb785130fb737ed98b5e"
+  end
+
   depends_on "go" => :build
 
   def install
