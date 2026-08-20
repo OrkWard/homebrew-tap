@@ -1,9 +1,9 @@
 class Selever < Formula
   desc "Install exact toolchains and packages with shell environment updates"
   homepage "https://github.com/orkward/selever"
+  url "https://github.com/orkward/selever.git", using: :git, tag: "v1.0.0",
+                                                revision: "5d9f4e0d57264033914f60eb192ded51b08e9b7b"
   license "MIT"
-
-  url "https://github.com/orkward/selever.git", using: :git, tag: "v1.0.0"
   head "https://github.com/orkward/selever.git", using: :git, branch: "master"
 
   depends_on "go" => :build
@@ -21,16 +21,12 @@ class Selever < Formula
     %w[selever fetchver globver].each do |name|
       (buildpath/"#{name}.fish").write Utils.safe_popen_read(bin/name, "completion", "fish")
       fish_completion.install buildpath/"#{name}.fish"
-    end
 
-    # bash
-    %w[selever fetchver globver].each do |name|
+      # bash
       (buildpath/name).write Utils.safe_popen_read(bin/name, "completion", "bash")
       bash_completion.install buildpath/name
-    end
 
-    # zsh
-    %w[selever fetchver globver].each do |name|
+      # zsh
       (buildpath/"_#{name}").write Utils.safe_popen_read(bin/name, "completion", "zsh")
       zsh_completion.install buildpath/"_#{name}"
     end
