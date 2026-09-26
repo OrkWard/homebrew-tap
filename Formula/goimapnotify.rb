@@ -18,6 +18,13 @@ class Goimapnotify < Formula
     system "go", "build", *std_go_args(ldflags: "-X main.gittag=#{version}"), "./cmd/goimapnotify"
   end
 
+  service do
+    run [opt_bin/"goimapnotify"]
+    keep_alive true
+    log_path var/"log/goimapnotify.log"
+    error_log_path var/"log/goimapnotify.log"
+  end
+
   test do
     assert_equal version.to_s, shell_output("#{bin}/goimapnotify -version").strip
   end
