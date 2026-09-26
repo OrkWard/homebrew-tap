@@ -6,6 +6,12 @@ class Goimapnotify < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/orkward/goimapnotify.git", using: :git, branch: "master"
 
+  bottle do
+    root_url "https://github.com/OrkWard/homebrew-tap/releases/download/goimapnotify-2.6.0"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe: "cb37108719fef64984f206d3cd17bb1655e813c3325d5e28195d12bf79b3822d"
+  end
+
   depends_on "go" => :build
 
   def install
