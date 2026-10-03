@@ -7,9 +7,8 @@ class Goimapnotify < Formula
   head "https://github.com/orkward/goimapnotify.git", using: :git, branch: "master"
 
   bottle do
-    root_url "https://github.com/OrkWard/homebrew-tap/releases/download/goimapnotify-2.6.0"
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_tahoe: "cb37108719fef64984f206d3cd17bb1655e813c3325d5e28195d12bf79b3822d"
+    root_url "https://video3.orkward.dev/bottles"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "f8729c88ba39417601c74d234e807fa58f835dedf2e58993711c3694eeff9a5f"
   end
 
   depends_on "go" => :build
