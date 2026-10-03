@@ -8,6 +8,11 @@ class Oama < Formula
   license "BSD-3-Clause"
   head "https://github.com/pdobsan/oama.git", using: :git, branch: "main"
 
+  bottle do
+    root_url "https://video3.orkward.dev/bottles"
+    sha256 cellar: :any, arm64_golden_gate: "6a86c0182745b03c6e4013feff50a588049f3c766f53d53feb03bf991e716456"
+  end
+
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
 
