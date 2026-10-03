@@ -8,7 +8,7 @@ class Selever < Formula
 
   bottle do
     root_url "https://github.com/orkward/selever/releases/download/v1.1.0"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dfee53d46808fc2836e19bff605b2837d3a9d423e7f883ec1c41eaff9d9d5b9b"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "7dd0a4274017920f86baee11d58bf992f09f556d1783f63d094e5285716f9cba"
   end
 
   depends_on "go" => :build
