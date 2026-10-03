@@ -24,6 +24,12 @@ class Oama < Formula
     system "cabal", "v2-build", "--jobs=#{ENV.make_jobs}"
     bin.install Utils.safe_popen_read("cabal", "list-bin", "-v0", "oama").chomp => "oama"
 
+    # GHC leaves ~626k symbols in __LINKEDIT, a third of the binary, that
+    # nothing needs at runtime. Stripping invalidates the signature, so
+    # re-sign ad-hoc afterwards.
+    system "strip", bin/"oama"
+    system "codesign", "--sign", "-", "--force", bin/"oama"
+
     bash_completion.install "completions/oama.bash" => "oama"
     fish_completion.install "completions/oama.fish"
     zsh_completion.install "completions/oama.zsh" => "_oama"
