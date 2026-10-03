@@ -41,7 +41,8 @@ end
 
 brew bottle --merge --write --no-commit $json_files; or exit $status
 
-set -l version
+# Not named `version`: that is a read-only special variable in fish.
+set -l bottle_version
 for built in (fd --no-ignore --max-depth 1 --type f "^$pattern.*\.bottle\.tar\.gz\$")
     # brew names the local file with a double dash; the published object uses
     # a single dash, so rename here rather than inside the bucket.
@@ -50,12 +51,12 @@ for built in (fd --no-ignore --max-depth 1 --type f "^$pattern.*\.bottle\.tar\.g
     mc cp $published $BOTTLE_TARGET/$published; or exit $status
     rm -f $published
 
-    set version (string replace -r -- "^$pattern(.+)\.[^.]+\.bottle\.tar\.gz\$" '$1' $built)
+    set bottle_version (string replace -r -- "^$pattern(.+)\.[^.]+\.bottle\.tar\.gz\$" '$1' $built)
 end
 
 rm -f $json_files
 
-git commit -q -am "$formula: add $version bottle."; or exit $status
+git commit -q -am "$formula: add $bottle_version bottle."; or exit $status
 git push origin main; or exit $status
 
 # Prove the published bottle is poured cleanly.
