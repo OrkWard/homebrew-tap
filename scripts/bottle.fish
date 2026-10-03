@@ -32,7 +32,7 @@ brew install --build-bottle $tap; or exit $status
 brew bottle --json --no-rebuild --root-url=$BOTTLE_ROOT $tap; or exit $status
 
 set -l pattern (string escape --style=regex -- $formula)--
-set -l json_files (fd --max-depth 1 --type f "^$pattern.*\.bottle\.json\$")
+set -l json_files (fd --no-ignore --max-depth 1 --type f "^$pattern.*\.bottle\.json\$")
 
 if test (count $json_files) -eq 0
     echo "brew bottle produced no JSON" >&2
@@ -42,7 +42,7 @@ end
 brew bottle --merge --write --no-commit $json_files; or exit $status
 
 set -l version
-for built in (fd --max-depth 1 --type f "^$pattern.*\.bottle\.tar\.gz\$")
+for built in (fd --no-ignore --max-depth 1 --type f "^$pattern.*\.bottle\.tar\.gz\$")
     # brew names the local file with a double dash; the published object uses
     # a single dash, so rename here rather than inside the bucket.
     set -l published (string replace -- -- - $built)
