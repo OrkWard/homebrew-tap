@@ -10,7 +10,7 @@ class Oama < Formula
 
   bottle do
     root_url "https://video3.orkward.dev/bottles"
-    sha256 cellar: :any, arm64_golden_gate: "3d02947ba4d53922f0097e2dafb826d1625efdc24ea9c29fcffbaea5c3963f42"
+    sha256 cellar: :any, arm64_golden_gate: "97e0d0acc363fc468ce94c184d18c415684373dda25317d2fef3a4756c79e617"
   end
 
   depends_on "cabal-install" => :build
