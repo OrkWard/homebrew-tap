@@ -1,8 +1,10 @@
 class Oama < Formula
   desc "OAuth credential manager for IMAP/SMTP mail clients"
   homepage "https://github.com/pdobsan/oama"
-  url "https://github.com/pdobsan/oama/archive/refs/tags/0.22.0.tar.gz"
-  sha256 "10866f90ec8adf227708fc3abe8d25a7d94c136ee9f5b43e6b91b504bf11e6de"
+  # Built from a clone, not a tarball: the githash dependency runs
+  # `git rev-parse` at compile time and fails without a .git directory.
+  url "https://github.com/pdobsan/oama.git", using: :git, tag: "0.22.0",
+                                             revision: "e419ef10ca4feacf4818c5cd9bd5e617f7ee2ee7"
   license "BSD-3-Clause"
   head "https://github.com/pdobsan/oama.git", using: :git, branch: "main"
 
