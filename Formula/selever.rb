@@ -14,9 +14,11 @@ class Selever < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-o", bin/"selever",  "./cmd/selever"
-    system "go", "build", "-o", bin/"fetchver", "./cmd/fetchver"
-    system "go", "build", "-o", bin/"globver",  "./cmd/globver"
+    # -s -w drops the symbol table and DWARF, a third of each binary.
+    ldflags = "-s -w"
+    system "go", "build", *std_go_args(output: bin/"selever",  ldflags:), "./cmd/selever"
+    system "go", "build", *std_go_args(output: bin/"fetchver", ldflags:), "./cmd/fetchver"
+    system "go", "build", *std_go_args(output: bin/"globver",  ldflags:), "./cmd/globver"
 
     generate_completions
   end
