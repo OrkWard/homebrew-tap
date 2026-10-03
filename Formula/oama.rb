@@ -12,8 +12,12 @@ class Oama < Formula
   depends_on "ghc" => :build
 
   def install
+    # `cabal v2-install` builds from a source distribution, which drops the
+    # .git directory that githash reads at compile time. Build in place and
+    # copy the executable out, the way upstream's justfile does.
     system "cabal", "v2-update"
-    system "cabal", "v2-install", *std_cabal_v2_args
+    system "cabal", "v2-build", "--jobs=#{ENV.make_jobs}"
+    bin.install Utils.safe_popen_read("cabal", "list-bin", "-v0", "oama").chomp => "oama"
 
     bash_completion.install "completions/oama.bash" => "oama"
     fish_completion.install "completions/oama.fish"
