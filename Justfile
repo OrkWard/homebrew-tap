@@ -7,11 +7,11 @@ default:
 
 # Point a git-sourced formula at a new upstream tag: just bump selever v1.1.0
 bump formula tag revision="":
-    ./scripts/bump.sh {{ formula }} {{ tag }} {{ revision }}
+    ./scripts/bump.fish {{ formula }} {{ tag }} {{ revision }}
 
 # Build, publish and commit a bottle: just bottle selever
 bottle formula:
-    ./scripts/bottle.sh {{ formula }}
+    ./scripts/bottle.fish {{ formula }}
 
 # List what the store currently serves.
 bottles:
