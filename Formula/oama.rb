@@ -1,12 +1,12 @@
 class Oama < Formula
   desc "OAuth credential manager for IMAP/SMTP mail clients"
-  homepage "https://github.com/pdobsan/oama"
+  homepage "https://github.com/orkward/oama"
   # Built from a clone, not a tarball: the githash dependency runs
   # `git rev-parse` at compile time and fails without a .git directory.
-  url "https://github.com/pdobsan/oama.git", using: :git, tag: "0.22.0",
-                                             revision: "e419ef10ca4feacf4818c5cd9bd5e617f7ee2ee7"
+  url "https://github.com/orkward/oama.git", using: :git, tag: "0.22.1",
+                                            revision: "c30544d22c3459839e755957cd466b6f04daa6be"
   license "BSD-3-Clause"
-  head "https://github.com/pdobsan/oama.git", using: :git, branch: "main"
+  head "https://github.com/orkward/oama.git", using: :git, branch: "main"
 
   bottle do
     root_url "https://video3.orkward.dev/bottles"
