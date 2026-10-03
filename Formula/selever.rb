@@ -8,7 +8,7 @@ class Selever < Formula
 
   bottle do
     root_url "https://video3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "0217f3119ec4264bf819df32ac34663cbf1b1b527261a2e1cc55c444a5cf84d1"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "4bc5e3623c4c01551c74e09af5dc5dc625263bc6ad17f962231cbd087927413a"
   end
 
   depends_on "go" => :build
