@@ -1,14 +1,15 @@
 class Goimapnotify < Formula
   desc "Execute scripts on IMAP mailbox changes using IDLE"
-  homepage "https://github.com/orkward/goimapnotify"
-  url "https://github.com/orkward/goimapnotify.git", using: :git, tag: "2.6.0",
-                                                revision: "bba5304d6378a30f1091d864d7400087a3950869"
+  homepage "https://gitlab.com/shackra/goimapnotify"
+  # Private fork, `git archive` of git.lan:goimapnotify. GPL-3 obliges the
+  # bottle to come with its source, so it is served next to the bottles.
+  url "https://video3.orkward.dev/src/goimapnotify-2.6.1.tar.gz"
+  sha256 "3572c862aa54453120c63643af11e29f3fd2c9d8dd70a69af3c645d242ed0788"
   license "GPL-3.0-or-later"
-  head "https://github.com/orkward/goimapnotify.git", using: :git, branch: "master"
 
   bottle do
     root_url "https://video3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "f8729c88ba39417601c74d234e807fa58f835dedf2e58993711c3694eeff9a5f"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "4fc1d817b46170afa7dc08601c7a75c857f68dbe1ec2a48de0ef33d9c65b9d2b"
   end
 
   depends_on "go" => :build
