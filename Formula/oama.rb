@@ -1,12 +1,11 @@
 class Oama < Formula
   desc "OAuth credential manager for IMAP/SMTP mail clients"
-  homepage "https://github.com/orkward/oama"
-  # Built from a clone, not a tarball: the githash dependency runs
-  # `git rev-parse` at compile time and fails without a .git directory.
-  url "https://github.com/orkward/oama.git", using: :git, tag: "0.22.1",
-                                            revision: "c30544d22c3459839e755957cd466b6f04daa6be"
+  homepage "https://github.com/pdobsan/oama"
+  # Private fork, `git archive` of git.lan:oama. The commit is stamped into
+  # the tarball by export-subst, so the build needs no git repository.
+  url "https://video3.orkward.dev/src/oama-0.22.2.tar.gz"
+  sha256 "9c3d19d768720d749916c82c3943dc1e46151b7a0eee1d29a8c83b54bf6f6f67"
   license "BSD-3-Clause"
-  head "https://github.com/orkward/oama.git", using: :git, branch: "main"
 
   bottle do
     root_url "https://video3.orkward.dev/bottles"
@@ -17,9 +16,6 @@ class Oama < Formula
   depends_on "ghc" => :build
 
   def install
-    # `cabal v2-install` builds from a source distribution, which drops the
-    # .git directory that githash reads at compile time. Build in place and
-    # copy the executable out, the way upstream's justfile does.
     system "cabal", "v2-update"
     system "cabal", "v2-build", "--jobs=#{ENV.make_jobs}"
     bin.install Utils.safe_popen_read("cabal", "list-bin", "-v0", "oama").chomp => "oama"
