@@ -15,7 +15,7 @@ class Selever < Formula
 
   def install
     # -s -w drops the symbol table and DWARF, a third of each binary.
-    ldflags = "-s -w"
+    ldflags = "-s -w -X github.com/orkward/selever/pkg/config.Version=#{version}"
     system "go", "build", *std_go_args(output: bin/"selever",  ldflags:), "./cmd/selever"
     system "go", "build", *std_go_args(output: bin/"fetchver", ldflags:), "./cmd/fetchver"
     system "go", "build", *std_go_args(output: bin/"globver",  ldflags:), "./cmd/globver"
