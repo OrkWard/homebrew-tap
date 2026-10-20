@@ -1,0 +1,101 @@
+name: Publish bottle
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Formula name (for example, selever)
+        required: true
+        type: string
+      tag:
+        description: Upstream tag (for example, v1.4.3)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    if: startsWith(github.ref, 'refs/heads/')
+    runs-on: macos-latest
+    env:
+      PACKAGE: ${{ inputs.package }}
+      TAG: ${{ inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      BOTTLE_ROOT: ${{ vars.BOTTLE_ROOT }}
+      BOTTLE_TARGET: ${{ vars.BOTTLE_TARGET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate inputs
+        shell: bash
+        run: |
+          [[ "$PACKAGE" =~ ^[a-z0-9][a-z0-9+@._-]*$ ]] || { echo "Invalid package name" >&2; exit 1; }
+          [[ "$TAG" =~ ^[A-Za-z0-9][A-Za-z0-9._+/-]*$ ]] || { echo "Invalid tag" >&2; exit 1; }
+          test -f "Formula/$PACKAGE.rb"
+          git check-ref-format "refs/tags/$TAG"
+
+      - name: Install recipe tools and tap
+        run: |
+          brew install fish just minio-mc
+          brew tap --custom-remote orkward/tap "$GITHUB_WORKSPACE"
+          git -C "$(brew --repository orkward/tap)" remote set-url origin \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+
+      - name: Configure MinIO
+        env:
+          MINIO_ENDPOINT: ${{ vars.MINIO_ENDPOINT }}
+          MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+        run: |
+          : "${MINIO_ENDPOINT:?Missing MINIO_ENDPOINT variable}"
+          : "${MINIO_ACCESS_KEY:?Missing MINIO_ACCESS_KEY secret}"
+          : "${MINIO_SECRET_KEY:?Missing MINIO_SECRET_KEY secret}"
+          : "${BOTTLE_ROOT:?Missing BOTTLE_ROOT variable}"
+          : "${BOTTLE_TARGET:?Missing BOTTLE_TARGET variable}"
+          mc alias set "${BOTTLE_TARGET%%/*}" "$MINIO_ENDPOINT" \
+            "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+
+      - name: Update formula and publish bottle
+        env:
+          BOTTLE_NO_PUSH: "1"
+        run: |
+          cd "$(brew --repository orkward/tap)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          just --no-dotenv bump "$PACKAGE" "$TAG"
+          test "$(git rev-list --count "$GITHUB_SHA..HEAD")" = 1
+          test "$(git diff --name-only "$GITHUB_SHA" HEAD)" = "Formula/$PACKAGE.rb"
+
+      - name: Create signed commit on the selected branch
+        run: |
+          cd "$(brew --repository orkward/tap)"
+          jq -n \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg branch "$GITHUB_REF_NAME" \
+            --arg head "$GITHUB_SHA" \
+            --arg message "$PACKAGE ${TAG#v}" \
+            --arg path "Formula/$PACKAGE.rb" \
+            --arg contents "$(base64 < "Formula/$PACKAGE.rb" | tr -d '\n')" \
+            '{
+              query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { url } } }",
+              variables: {
+                input: {
+                  branch: {repositoryNameWithOwner: $repository, branchName: $branch},
+                  expectedHeadOid: $head,
+                  message: {headline: $message},
+                  fileChanges: {additions: [{path: $path, contents: $contents}]}
+                }
+              }
+            }' > "$RUNNER_TEMP/bump-commit.json"
+          gh api graphql --input "$RUNNER_TEMP/bump-commit.json" \
+            --jq '.data.createCommitOnBranch.commit.url'
