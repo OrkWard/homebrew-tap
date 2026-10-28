@@ -3,12 +3,12 @@ class Oama < Formula
   homepage "https://github.com/pdobsan/oama"
   # Private fork, `git archive` of git.lan:oama. The commit is stamped into
   # the tarball by export-subst, so the build needs no git repository.
-  url "https://video3.orkward.dev/src/oama-0.22.2.tar.gz"
+  url "https://s3.orkward.dev/src/oama-0.22.2.tar.gz"
   sha256 "9c3d19d768720d749916c82c3943dc1e46151b7a0eee1d29a8c83b54bf6f6f67"
   license "BSD-3-Clause"
 
   bottle do
-    root_url "https://video3.orkward.dev/bottles"
+    root_url "https://s3.orkward.dev/bottles"
     sha256 cellar: :any, arm64_golden_gate: "dd4eae82b35721af6960d81ffa550add7c9f04237d417b7354d2f3641114269c"
   end
 

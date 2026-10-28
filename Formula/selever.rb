@@ -7,7 +7,7 @@ class Selever < Formula
   head "https://github.com/orkward/selever.git", using: :git, branch: "master"
 
   bottle do
-    root_url "https://video3.orkward.dev/bottles"
+    root_url "https://s3.orkward.dev/bottles"
     sha256 cellar: :any_skip_relocation, arm64_tahoe: "f998b4e3350a108e1a47af3c393a27ebaa5ff6534ad51b5fbfc99c07a23747ef"
   end
 
