@@ -3,6 +3,9 @@
 #
 # Usage: scripts/bump.fish <formula> <tag> [revision]
 # Set BOTTLE_NO_PUSH to leave publishing the Git commit to the caller.
+#
+# Formulae sourced from a tarball (e.g. the src bucket) have the version in
+# their URL replaced by the tag; upload that tarball before bumping.
 
 set -l formula $argv[1]
 set -l tag $argv[2]
@@ -28,8 +31,17 @@ if test -n "$(git status --porcelain --untracked-files=all)"
     exit 1
 end
 
-set -l args --write-only --no-audit --tag=$tag
-test -n "$revision"; and set -a args --revision=$revision
+set -l args --write-only --no-audit
+if string match -qr 'using: :git' <Formula/$formula.rb
+    set -a args --tag=$tag
+    test -n "$revision"; and set -a args --revision=$revision
+else
+    if test -n "$revision"
+        echo "$formula is sourced from a tarball; revision does not apply" >&2
+        exit 1
+    end
+    set -a args --version=(string replace -r '^v' '' -- $tag)
+end
 
 brew bump-formula-pr $args $tap; or exit $status
 
