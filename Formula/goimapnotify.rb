@@ -3,13 +3,13 @@ class Goimapnotify < Formula
   homepage "https://gitlab.com/shackra/goimapnotify"
   # Private fork, `git archive` of git.lan:goimapnotify. GPL-3 obliges the
   # bottle to come with its source, so it is served next to the bottles.
-  url "https://s3.orkward.dev/src/goimapnotify-2.6.1.tar.gz"
-  sha256 "3572c862aa54453120c63643af11e29f3fd2c9d8dd70a69af3c645d242ed0788"
+  url "https://s3.orkward.dev/src/goimapnotify-2.6.2.tar.gz"
+  sha256 "6a7c605686bce490b9e91c1de7124f8d37b9d5250c7db696aa887ef42cf77f32"
   license "GPL-3.0-or-later"
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "4fc1d817b46170afa7dc08601c7a75c857f68dbe1ec2a48de0ef33d9c65b9d2b"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "acc9459385486d2c3ffaa01852f494410dd597e76dfdbe7886c4022c091cd6b2"
   end
 
   depends_on "go" => :build
