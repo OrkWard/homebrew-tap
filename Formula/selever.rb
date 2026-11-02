@@ -1,14 +1,14 @@
 class Selever < Formula
   desc "Install exact toolchains and packages with shell environment updates"
   homepage "https://github.com/orkward/selever"
-  url "https://github.com/orkward/selever.git", using: :git, tag: "v2.2.2",
-                                                revision: "c82f564e447eb51ee61e9466235f6deea24ca92f"
+  url "https://github.com/orkward/selever.git", using: :git, tag: "v2.2.3",
+                                                revision: "cd112d58201e71dbe4cbb7b047ed2e35c01bea60"
   license "MIT"
   head "https://github.com/orkward/selever.git", using: :git, branch: "master"
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "58186fd24f7e2835bca76a44507ebf907727dd5040caf03576349da89bd20d23"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "bf2e56df9a757684b990885c96b596c64d00b0eeb3b8354c6565c9b11e751390"
   end
 
   depends_on "nim" => :build
