@@ -1,24 +1,19 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  url "https://github.com/docker/cli.git", using: :git, tag: "v29.9.3",
-                                           revision: "5457199aa57c45e990c59c89cab5f02b817238d7"
+  # Private fork, `git archive` of git.lan:docker-cli, served next to the bottles.
+  url "https://s3.orkward.dev/src/docker-29.9.3.tar.gz"
+  sha256 "e4294abfec64f6b9afbc9d4b334425575de1d5766d9be16090ffc3fdcd8f791d"
   license "Apache-2.0"
-  head "https://github.com/docker/cli.git", using: :git, branch: "master"
+  revision 1
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "a9fe381be1c8cdf1e32387b19180c7f23bffce51147f5d29c7d7f99cd9dd44e0"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "480e2ef1b3e00b7183cc46d74761d8ae6102aef78c416694763df833375c0d07"
   end
 
   depends_on "go" => :build
   depends_on "go-md2man" => :build
-
-  # Look up per-host proxies in config.json by the context's endpoint
-  # (e.g. ssh://user@host) rather than the client's dummy host
-  # http://docker.example.com used for SSH connections.
-  # See docker/cli#7046.
-  patch :DATA
 
   deny_network_access!
 
@@ -31,7 +26,6 @@ class Docker < Formula
 
     ldflags = [
       "-X", "github.com/docker/cli/cli/version.BuildTime=#{time.iso8601}",
-      "-X", "github.com/docker/cli/cli/version.GitCommit=#{Utils.git_short_head}",
       "-X", "github.com/docker/cli/cli/version.Version=#{version}",
       "-X", "\"github.com/docker/cli/cli/version.PlatformName=Docker Engine - Community\""
     ]
@@ -63,41 +57,3 @@ class Docker < Formula
     assert_match expected, shell_output("#{bin}/docker info", 1)
   end
 end
-
-__END__
-diff --git a/cli/command/container/create.go b/cli/command/container/create.go
---- a/cli/command/container/create.go
-+++ b/cli/command/container/create.go
-@@ -102,7 +102,7 @@ func runCreate(ctx context.Context, dockerCLI command.Cli, flags *pflag.FlagSet,
- 			StatusCode: 125,
- 		}
- 	}
--	proxyConfig := dockerCLI.ConfigFile().ParseProxyConfig(dockerCLI.Client().DaemonHost(), opts.ConvertKVStringsToMapWithNil(copts.env.GetSlice()))
-+	proxyConfig := dockerCLI.ConfigFile().ParseProxyConfig(dockerCLI.DockerEndpoint().Host, opts.ConvertKVStringsToMapWithNil(copts.env.GetSlice()))
- 	newEnv := make([]string, 0, len(proxyConfig))
- 	for k, v := range proxyConfig {
- 		if v == nil {
-diff --git a/cli/command/container/run.go b/cli/command/container/run.go
---- a/cli/command/container/run.go
-+++ b/cli/command/container/run.go
-@@ -91,7 +91,7 @@ func runRun(ctx context.Context, dockerCLI command.Cli, flags *pflag.FlagSet, ro
- 			StatusCode: 125,
- 		}
- 	}
--	proxyConfig := dockerCLI.ConfigFile().ParseProxyConfig(dockerCLI.Client().DaemonHost(), opts.ConvertKVStringsToMapWithNil(copts.env.GetSlice()))
-+	proxyConfig := dockerCLI.ConfigFile().ParseProxyConfig(dockerCLI.DockerEndpoint().Host, opts.ConvertKVStringsToMapWithNil(copts.env.GetSlice()))
- 	newEnv := []string{}
- 	for k, v := range proxyConfig {
- 		if v == nil {
-diff --git a/cli/command/image/build.go b/cli/command/image/build.go
---- a/cli/command/image/build.go
-+++ b/cli/command/image/build.go
-@@ -439,7 +439,7 @@ func imageBuildOptions(dockerCli command.Cli, options buildOptions) client.Image
- 		CgroupParent:   options.cgroupParent,
- 		ShmSize:        options.shmSize.Value(),
- 		Ulimits:        options.ulimits.GetList(),
--		BuildArgs:      configFile.ParseProxyConfig(dockerCli.Client().DaemonHost(), opts.ConvertKVStringsToMapWithNil(options.buildArgs.GetSlice())),
-+		BuildArgs:      configFile.ParseProxyConfig(dockerCli.DockerEndpoint().Host, opts.ConvertKVStringsToMapWithNil(options.buildArgs.GetSlice())),
- 		Labels:         opts.ConvertKVStringsToMap(options.labels.GetSlice()),
- 		CacheFrom:      options.cacheFrom,
- 		SecurityOpt:    options.securityOpt,
