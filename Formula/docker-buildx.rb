@@ -1,14 +1,14 @@
 class DockerBuildx < Formula
   desc "Docker CLI plugin for extended build capabilities with BuildKit"
   homepage "https://docs.docker.com/buildx/working-with-buildx/"
-  url "https://github.com/docker/buildx/archive/refs/tags/v0.39.0.tar.gz"
-  sha256 "45aa68ee053b9bfa3c82f3dc7a2562e118be33e20ac87f572fa6e9f3d9ad67da"
+  # Private fork, `git archive` of git.lan:docker-buildx, served next to the bottles.
+  url "https://s3.orkward.dev/src/docker-buildx-0.39.0.tar.gz"
+  sha256 "f9e7a680dac9889795ec0bb30eefbc230da1c215c33984068d5d807997fe4485"
   license "Apache-2.0"
-  head "https://github.com/docker/buildx.git", branch: "master"
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "4f0e31a21decdc4910bd974e97b0bc5f286dd007fd18b0b940aec04259e2816a"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "572db056e759f44577e61088ac97976a4b01cde6530caa14a9c2953b8458ab75"
   end
 
   depends_on "go" => :build

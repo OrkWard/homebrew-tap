@@ -1,22 +1,14 @@
 class DockerCompose < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/refs/tags/v5.7.1.tar.gz"
-  sha256 "bd108789759d3e17ae5532dd6eee67b427dade4c85089daa2f85d6c8f3e3ccb6"
+  # Private fork, `git archive` of git.lan:docker-compose, served next to the bottles.
+  url "https://s3.orkward.dev/src/docker-compose-5.7.1.tar.gz"
+  sha256 "4d34a7ec2b24bfd3908c1143bf22eba885c8d084f2be0fcbff1b5b776bc50ffd"
   license "Apache-2.0"
-  head "https://github.com/docker/compose.git", branch: "main"
-
-  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
-  # labeled as "pre-release" on GitHub before the version is released, so it's
-  # necessary to use the `GithubLatest` strategy.
-  livecheck do
-    url :stable
-    strategy :github_latest
-  end
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "81bd9c3662ca3080148b8108969d7e74380f7f07047d58ebb5999cceeb3f10f7"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "93ba4d385603db696c4eb114ee9ef8c9f967100333f249a008edae2c8f1c2a41"
   end
 
   depends_on "go" => :build
