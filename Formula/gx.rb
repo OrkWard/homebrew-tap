@@ -2,12 +2,12 @@ class Gx < Formula
   desc "Coding agent CLI with an inline terminal UI"
   homepage "https://s3.orkward.dev/src/"
   # Private repo, `git archive` of git.lan:gx, served next to the bottles.
-  url "https://s3.orkward.dev/src/gx-0.3.3.tar.gz"
-  sha256 "5cc5ef2d05395549d1987d5e53b33e6df04f668be57c5fce90d82880b4074916"
+  url "https://s3.orkward.dev/src/gx-0.3.4.tar.gz"
+  sha256 "61b404010896429dd0e5a4281bbb9f792c11a9397ca194006d2bf36b52070538"
 
   bottle do
     root_url "https://s3.orkward.dev/bottles"
-    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "54372e1fb513b000079d6ef19aee4a65df3e01688e9175d5ef9d984225091a9c"
+    sha256 cellar: :any_skip_relocation, arm64_golden_gate: "52be9ad3fd0407e982dc2c63177636e158472924a634933685500d1412cbbaf4"
   end
 
   depends_on "go" => :build
